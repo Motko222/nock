@@ -13,7 +13,7 @@ EnvironmentFile=/root/scripts/nock/env
 Environment="PATH=/root/.cargo/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/snap/bin:/root/go/bin:/usr/local/go/bin:/root/go/bin:/usr/local/go/bin:/root/go/bin"
 User=root
 Group=root
-ExecStart=make run-nockchain-follower
+ExecStart=make run-nockchain
 Restart=always
 RestartSec=30
 LimitNOFILE=65536
