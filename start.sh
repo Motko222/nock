@@ -9,3 +9,4 @@ systemctl stop nock-leader.service
 systemctl restart nock-leader.service
 #systemctl restart nock-follower.service
 
+journalctl -n 200 -u nock-leader.service -f --no-hostname -o cat
