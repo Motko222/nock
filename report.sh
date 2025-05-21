@@ -6,17 +6,14 @@ json=/root/logs/report-$folder
 source /root/.bash_profile
 source $path/env
 
-version=$(journalctl -u nock-leader.service --no-hostname -o cat | grep "Build label:" | awk '{print $NF}' | tail -1)
-service1=$(sudo systemctl status nock-leader --no-pager | grep "active (running)" | wc -l)
-service2=$(sudo systemctl status nock-follower --no-pager | grep "active (running)" | wc -l)
-errors1=$(journalctl -u nock-leader.service --since "1 hour ago" --no-hostname -o cat | grep -c -E "rror|ERR")
-errors2=$(journalctl -u nock-follower.service --since "1 hour ago" --no-hostname -o cat | grep -c -E "rror|ERR")
+version=$(journalctl -u nock.service --no-hostname -o cat | grep "Build label:" | awk '{print $NF}' | tail -1)
+service=$(sudo systemctl status nock.service --no-pager | grep "active (running)" | wc -l)
+errors=$(journalctl -u nock.service --since "1 hour ago" --no-hostname -o cat | grep -c -E "rror|ERR")
 #balance=$(./root/nockchain/target/release/nockchain-wallet --nockchain-socket ./test-leader/nockchain.sock balance)
 
 status="ok" && message="bal=$balance"
-[ $errors1 -gt 500 ] && status="warning" && message="bal=$balance errors=$errors1/$errors2";
-[ $service2 -ne 1 ] && status="error" && message="follower service not running";
-[ $service1 -ne 1 ] && status="error" && message="leader service not running";
+[ $errors -gt 500 ] && status="warning" && message="bal=$balance errors=$errors";
+[ $service -ne 1 ] && status="error" && message="leader service not running";
 
 cat >$json << EOF
 {
@@ -34,9 +31,8 @@ cat >$json << EOF
         "version":"$version",
         "status":"$status",
         "message":"$message",
-        "service_leader":"$service1",
-        "service_follower":"$service2",
-        "errors":"$errors1/$errors2",
+        "service":"$service",
+        "errors":"$errors",
         "url":""
   }
 }
