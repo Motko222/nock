@@ -6,7 +6,7 @@ json=/root/logs/report-$folder
 source /root/.bash_profile
 source $path/env
 
-version=$()
+version=$(journalctl -u nock-leader.service --no-hostname -o cat | grep "Build label:" | awk '{print $NF}')
 service1=$(sudo systemctl status nock-leader --no-pager | grep "active (running)" | wc -l)
 service2=$(sudo systemctl status nock-follower --no-pager | grep "active (running)" | wc -l)
 errors1=$(journalctl -u nock-leader.service --since "1 hour ago" --no-hostname -o cat | grep -c -E "rror|ERR")
@@ -23,7 +23,7 @@ cat >$json << EOF
   "updated":"$(date --utc +%FT%TZ)",
   "measurement":"report",
   "tags": {
-       "id":"folder-$ID",
+       "id":"$folder-$ID",
        "machine":"$MACHINE",
        "grp":"node",
        "owner":"$OWNER"
