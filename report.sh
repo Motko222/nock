@@ -13,7 +13,7 @@ errors=$(journalctl -u nock.service --since "1 hour ago" --no-hostname -o cat | 
 
 status="ok" && message="bal=$balance"
 [ $errors -gt 500 ] && status="warning" && message="bal=$balance errors=$errors";
-[ $service -ne 1 ] && status="error" && message="leader service not running";
+[ $service -ne 1 ] && status="error" && message="service not running";
 
 cat >$json << EOF
 {
