@@ -14,7 +14,7 @@ errors2=$(journalctl -u nock-follower.service --since "1 hour ago" --no-hostname
 #balance=$(./root/nockchain/target/release/nockchain-wallet --nockchain-socket ./test-leader/nockchain.sock balance)
 
 status="ok" && message="bal=$balance"
-[ $errors1 -gt 500 ] && status="warning" && message="bal=$balance errors=$errors";
+[ $errors1 -gt 500 ] && status="warning" && message="bal=$balance errors=$errors1/$errors2";
 [ $service2 -ne 1 ] && status="error" && message="follower service not running";
 [ $service1 -ne 1 ] && status="error" && message="leader service not running";
 
@@ -36,7 +36,7 @@ cat >$json << EOF
         "message":"$message",
         "service_leader":"$service1",
         "service_follower":"$service2",
-        "errors":"$errors",
+        "errors":"$errors1/errors2",
         "url":""
   }
 }
