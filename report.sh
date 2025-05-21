@@ -36,7 +36,7 @@ cat >$json << EOF
         "message":"$message",
         "service_leader":"$service1",
         "service_follower":"$service2",
-        "errors":"$errors1/errors2",
+        "errors":"$errors1/$errors2",
         "url":""
   }
 }
