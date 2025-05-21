@@ -7,12 +7,15 @@ source /root/.bash_profile
 source $path/env
 
 version=$()
-service=$(sudo systemctl status $folder --no-pager | grep "active (running)" | wc -l)
-errors=$(journalctl -u $folder.service --since "1 hour ago" --no-hostname -o cat | grep -c -E "rror|ERR")
+service1=$(sudo systemctl status nock-leader --no-pager | grep "active (running)" | wc -l)
+service2=$(sudo systemctl status nock-follower --no-pager | grep "active (running)" | wc -l)
+errors1=$(journalctl -u nock-leader.service --since "1 hour ago" --no-hostname -o cat | grep -c -E "rror|ERR")
+errors2=$(journalctl -u nock-follower.service --since "1 hour ago" --no-hostname -o cat | grep -c -E "rror|ERR")
 
 status="ok" && message=""
-[ $errors -gt 500 ] && status="warning" && message="errors=$errors";
-[ $service -ne 1 ] && status="error" && message="service not running";
+[ $errors1 -gt 500 ] && status="warning" && message="errors=$errors";
+[ $service2 -ne 1 ] && status="error" && message="follower service not running";
+[ $service1 -ne 1 ] && status="error" && message="leader service not running";
 
 cat >$json << EOF
 {
@@ -32,8 +35,7 @@ cat >$json << EOF
         "message":"$message",
         "service":$service,
         "errors":$errors,
-        "url":"",
-        "balance":"$balance"
+        "url":""
   }
 }
 EOF
