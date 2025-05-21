@@ -2,19 +2,7 @@ path=$(cd -- $(dirname -- "${BASH_SOURCE[0]}") && pwd)
 folder=$(echo $path | awk -F/ '{print $NF}')
 source $path/env
 
-read -p "Sure? " c
-case $c in y|Y) ;; *) exit ;; esac
-
-#install binary
-cd /root
-# add install cmds here
-
-#create env
-cd $path
-[ -f env ] || cp env.sample env
-nano env
-
-#create service
+#leader
 printf "[Unit]
 Description=nock-leader node
 After=network.target
@@ -37,6 +25,7 @@ WorkingDirectory=/root/nockchain/target/release
 [Install]
 WantedBy=multi-user.target" > /etc/systemd/system/nock-leader.service
 
+#follower
 printf "[Unit]
 Description=nock-follower node
 After=network.target
