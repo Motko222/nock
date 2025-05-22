@@ -29,4 +29,4 @@ WorkingDirectory=$WORKDIR
 WantedBy=multi-user.target" > /etc/systemd/system/$folder.service
 
 sudo systemctl daemon-reload
-sudo systemctl enable nock
+sudo systemctl enable $folder
