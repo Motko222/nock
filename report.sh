@@ -6,11 +6,11 @@ json=/root/logs/report-$folder
 source /root/.bash_profile
 source $path/env
 
-version=$(journalctl -u nock.service --no-hostname -o cat | grep "Build label:" | awk '{print $NF}' | tail -1)
-service=$(sudo systemctl status nock.service --no-pager | grep "active (running)" | wc -l)
-errors=$(journalctl -u nock.service --since "1 hour ago" --no-hostname -o cat | grep -c -E "rror|ERR")
+version=$(journalctl -u $folder.service --no-hostname -o cat | grep "Build label:" | awk '{print $NF}' | tail -1)
+service=$(sudo systemctl status $folder.service --no-pager | grep "active (running)" | wc -l)
+errors=$(journalctl -u $folder.service --since "1 hour ago" --no-hostname -o cat | grep -c -E "rror|ERR")
 #balance=$(./root/nockchain/target/release/nockchain-wallet --nockchain-socket ./test-leader/nockchain.sock balance)
-height=$(journalctl -u nock.service --no-hostname -o cat | grep "added to validated blocks at" | awk '{print $NF}' | tail -1)
+height=$(journalctl -u $folder.service --no-hostname -o cat | grep "added to validated blocks at" | awk '{print $NF}' | tail -1)
 
 status="ok" && message="height=$height bal=$balance"
 [ $errors -gt 500 ] && status="warning" && message="bal=$balance errors=$errors";
