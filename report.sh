@@ -13,7 +13,7 @@ errors=$(journalctl -u $folder.service --since "1 hour ago" --no-hostname -o cat
 height=$(journalctl -u $folder.service --no-hostname -o cat | grep "added to validated blocks at" | awk '{print $NF}' | tail -1 | sed -e $'s/\x1b\[[0-9;]*m//g' )
 
 status="ok" && message="height=$height bal=$balance"
-[ $errors -gt 500 ] && status="warning" && message="bal=$balance errors=$errors";
+[ $errors -gt 2000 ] && status="warning" && message="height=$height bal=$balance errors=$errors";
 [ $service -ne 1 ] && status="error" && message="service not running";
 
 cat >$json << EOF
