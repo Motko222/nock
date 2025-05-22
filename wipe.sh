@@ -4,8 +4,8 @@ path=$(cd -- $(dirname -- "${BASH_SOURCE[0]}") && pwd)
 folder=$(echo $path | awk -F/ '{print $NF}')
 source $path/env
 
-read -p "Sure ? " sure
-[ $sure -ne "y" -a $sure -ne "Y" ] && exit 1
+read -p "Sure? " c
+case $c in y|Y) ;; *) exit ;; esac
 
 rm -r $WORKDIR/.data.nockchain
 rm -r $WORKDIR/.socket
