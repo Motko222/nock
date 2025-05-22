@@ -35,7 +35,7 @@ cat >$json << EOF
         "service":"$service",
         "errors":"$errors",
         "height":"$height",
-        "url":""
+        "url":"$BIND $PEER"
   }
 }
 EOF
