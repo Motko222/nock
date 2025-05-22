@@ -22,7 +22,7 @@ LimitNOFILE=65536
 LimitNPROC=4096
 StandardOutput=journal
 StandardError=journal
-SyslogIdentifier=nock
+SyslogIdentifier=$folder
 WorkingDirectory=$WORKDIR
 
 [Install]
