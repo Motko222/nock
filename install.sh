@@ -4,13 +4,15 @@ source $path/env
 
 #follower
 printf "[Unit]
-Description=nock miner
+Description=$folder
 After=network.target
 Wants=network-online.target
 
 [Service]
-EnvironmentFile=/root/scripts/nock/env
+EnvironmentFile=/root/scripts/$folder/env
 Environment="PATH=/root/.cargo/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/snap/bin:/root/go/bin:/usr/local/go/bin:/root/go/bin:/usr/local/go/bin:/root/go/bin"
+Environment="RUST_LOG=INFO"
+Environment="MINIMAL_LOG_FORMAT=true"
 User=root
 Group=root
 ExecStart=make run-nockchain
@@ -21,10 +23,10 @@ LimitNPROC=4096
 StandardOutput=journal
 StandardError=journal
 SyslogIdentifier=nock
-WorkingDirectory=/root/nockchain
+WorkingDirectory=$WORKDIR
 
 [Install]
-WantedBy=multi-user.target" > /etc/systemd/system/nock.service
+WantedBy=multi-user.target" > /etc/systemd/system/$folder.service
 
 sudo systemctl daemon-reload
 sudo systemctl enable nock
