@@ -10,7 +10,7 @@ version=$(journalctl -u $folder.service --no-hostname -o cat | grep "Build label
 service=$(sudo systemctl status $folder.service --no-pager | grep "active (running)" | wc -l)
 errors=$(journalctl -u $folder.service --since "1 hour ago" --no-hostname -o cat | grep -c -E "rror|ERR")
 #balance=$(./root/nockchain/target/release/nockchain-wallet --nockchain-socket ./test-leader/nockchain.sock balance)
-height=$(journalctl -u $folder.service --no-hostname -o cat | grep "added to validated blocks at" | awk '{print $NF}' | tail -1 | | sed 's/^[[0m//g' )
+height=$(journalctl -u $folder.service --no-hostname -o cat | grep "added to validated blocks at" | awk '{print $NF}' | tail -1 | sed -e $'s/\x1b\[[0-9;]*m//g' )
 
 status="ok" && message="height=$height bal=$balance"
 [ $errors -gt 500 ] && status="warning" && message="bal=$balance errors=$errors";
