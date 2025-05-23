@@ -9,9 +9,8 @@ source $path/env
 version=$(journalctl -u $folder.service --no-hostname -o cat | grep "Build label:" | awk '{print $NF}' | tail -1)
 service=$(sudo systemctl status $folder.service --no-pager | grep "active (running)" | wc -l)
 errors=$(journalctl -u $folder.service --since "1 hour ago" --no-hostname -o cat | grep -c -E "rror|ERR")
-#balance=$(./root/nockchain/target/release/nockchain-wallet --nockchain-socket ./test-leader/nockchain.sock balance)
 height=$(journalctl -u $folder.service --no-hostname -o cat | grep "added to validated blocks at" | awk '{print $NF}' | tail -1 | sed -e $'s/\x1b\[[0-9;]*m//g' )
-hits=$(./root/nockchain/target/release/nockchain-wallet --nockchain-socket $SOCKET list-notes 2>/dev/null | tr -d '\0' | grep -c $PUBKEY | awk '{print $1 / 2}')
+hits=$(./root/nockchain/target/release/nockchain-wallet --nockchain-socket $WORKDIR/.socket/nockchain_npc.sock list-notes-by-pubkey -p $PUBKEY 2>/dev/null | tr -d '\0' | grep -c signers | awk '{print $1 / 2}')
 status="ok" && message="height=$height hits=$hits"
 [ $errors -gt 2000 ] && status="warning" && message="height=$height hits=$hits errors=$errors";
 [ $service -ne 1 ] && status="error" && message="service not running";
