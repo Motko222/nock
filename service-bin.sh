@@ -15,7 +15,7 @@ Environment="RUST_LOG=INFO"
 Environment="MINIMAL_LOG_FORMAT=true"
 User=root
 Group=root
-ExecStart=/root/nockchain/target/release/nockchain --mining-pubkey $PUBKEY --mine --bind $BIND
+ExecStart=/root/nockchain/target/release/nockchain --mining-pubkey $PUBKEY --mine --bind $BIND --state-jam /root/$folder/state.jam
 Restart=always
 RestartSec=30
 LimitNOFILE=65536
