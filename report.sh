@@ -9,7 +9,7 @@ source $path/env
 version=$(journalctl -u $folder.service --no-hostname -o cat | grep "Build label:" | awk '{print $NF}' | tail -1)
 service=$(sudo systemctl status $folder.service --no-pager | grep "active (running)" | wc -l)
 errors=$(journalctl -u $folder.service --since "1 hour ago" --no-hostname -o cat | grep -c -E "rror|ERR")
-height=$(journalctl -u $folder.service --no-hostname -o cat | grep "added to validated blocks at" | awk '{print $NF}' | tail -1 | sed -e $'s/\x1b\[[0-9;]*m//g' )
+height=$(journalctl -u $folder.service --no-hostname -o cat | grep "added to validated blocks at" | awk '{print $10}' | tail -1 | sed -e $'s/\x1b\[[0-9;]*m//g' )
 blocks_per_h=$(journalctl -u $folder.service --since "1 hour ago" --no-hostname -o cat | grep -c "added to validated blocks at")
 hits=$(./root/nockchain/target/release/nockchain-wallet --nockchain-socket $WORKDIR/.socket/nockchain_npc.sock list-notes-by-pubkey -p $PUBKEY 2>/dev/null | tr -d '\0' | grep -c signers | awk '{print $1 / 2}')
 status="ok" && message="height=$height+$blocks_per_h hits=$hits"
